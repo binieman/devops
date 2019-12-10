@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 
   (1..3).each do |i|
     port = 8080+i
-    ip_address = i+10
+    ip_address = i+100
     config.vm.define "VM-#{i}" do |node|
       node.vm.network "forwarded_port", guest: 3001, host: port, host_ip: "127.0.0.1"
       node.vm.network "private_network", ip: "192.168.33.#{ip_address}"

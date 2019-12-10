@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-
+ 
 const ping = require('ping');
 // Constants
 const PORT = process.env.PORT || 80;
@@ -19,10 +19,10 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, HOST);
 
-var hosts = ['192.168.33.11','192.168.33.12','192.168.33.13'];
+var hosts = ['192.168.33.101','192.168.33.102','192.168.33.103']; // hardcoded IP but can be dynamic or passed through env
 
 var cron = require('node-cron')
-cron.schedule('*/60 * * * * *', () => {  // 10 second cronjob to ping
+cron.schedule('*/60 * * * * *', () => {  // 60 second cronjob to ping
     //console.log('Every 60 seconds');
     hosts.forEach(function (host) {
         ping.promise.probe(host,).then(function (res) {
