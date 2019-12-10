@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 """
 
-This will show a window on the left for user input. When the user types, the
-reversed input is shown on the right. Pressing Ctrl-Q will quit the application.
+The Idea is to make a multiplexed Terminal window. Pressing Ctrl-Q will quit the application.
 """
 from prompt_toolkit.application import Application
 from prompt_toolkit.buffer import Buffer
@@ -12,7 +11,7 @@ from prompt_toolkit.layout.controls import BufferControl, FormattedTextControl
 from prompt_toolkit.layout.layout import Layout
 from prompt_toolkit import PromptSession
 
-# 3. Create the buffers
+# Create the buffers
 #    ------------------
 
 left_buffer = Buffer()
