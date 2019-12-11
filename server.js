@@ -22,8 +22,8 @@ app.listen(PORT, HOST);
 var hosts = ['192.168.33.101','192.168.33.102','192.168.33.103']; // hardcoded IP but can be dynamic or passed through env
 
 var cron = require('node-cron')
-cron.schedule('*/60 * * * * *', () => {  // 60 second cronjob to ping
-    //console.log('Every 60 seconds');
+cron.schedule('*/100 * * * * *', () => {  // 10 second cronjob to ping
+    //console.log('Every 10 seconds');
     hosts.forEach(function (host) {
         ping.promise.probe(host,).then(function (res) {
                 console.log(res);

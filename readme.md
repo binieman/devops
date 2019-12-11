@@ -3,8 +3,8 @@ Requirements:
 1. Python 
 2. Vagrant
 3. Virtual Box
-
-This is a demo that will fire up 3 vagranted virtual machines and run a node js servers on Docker Containers.
+4. Tmux  (terminal multiplexer)
+This is a demo that will fire up 3 vagranted virtual machines and run a node js servers on Docker Containers. The idea is to have a terminal multiplexer which is automated. 
 
 The IPs of the VMS:
 VM1 = 192.168.33.101   port  map=  3001 
