@@ -3,23 +3,34 @@ Requirements:
 1. Python 
 2. Vagrant
 3. Virtual Box
-4. Tmux  (terminal multiplexer)
 This is a demo that will fire up 3 vagranted virtual machines and run a node js servers on Docker Containers. The idea is to have a terminal multiplexer which is automated. 
 
 The IPs of the VMS:
-VM1 = 192.168.33.101   port  map=  3001 
-VM1 = 192.168.33.102   port  map=  3001 
-VM1 = 192.168.33.103   port  map=  3001
+VM1 = 192.168.33.101   port  map=  80
+VM1 = 192.168.33.102   port  map=  80
+VM1 = 192.168.33.103   port  map=  80
 
 The server will return respond with "Hello World" for now in the following IPs:
 
-VM1 = http://localhost:8081/ or 192.168.33.101:3001
-VM2 = http://localhost:8082/ or 192.168.33.102:3001
-VM3 = http://localhost:8083/ or 192.168.33.103:3001
+VM1 = http://localhost:8081/ or 192.168.33.101
+VM2 = http://localhost:8082/ or 192.168.33.102
+VM3 = http://localhost:8083/ or 192.168.33.103
 
-To Run straight from shell:
+API endpoints
 
-$>vagrant up
+GET IP/pong-> gets "PONG request"
+
+query parameters: none
+body: none
+behavior: Waits 10 seconds and then responds with a string "PONG"
+response: "PONG"
+
+
+POST IP/ping 
+query parameters: none
+body: { "targets": [<ip address>, ...] }
+behavior: Receives a list of ip addresses in the message body. For EACH ip address <addr> in parallel, should send an HTTP GET to http://<addr>/pong
+response: { "success": [<addr pong was successful>, ...], "fail": [<addr pong failed>, ...] }
 
 Ssh into the VMS for eg. vagrant ssh VM1
 $> vagrant ssh {VM1 or VM2 or VM3}
@@ -50,5 +61,5 @@ $>pipenv shell
 That should activate the virtual environment for python.
 After that 
 $>pip install -r requirements.txt
-$>python automate.py or automateControl.py
+$>python automate.py <IP1......IPn>
 
