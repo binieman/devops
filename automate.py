@@ -1,11 +1,27 @@
 """
-This is a test file.The original idea is on automateControl.py
+This is the test file
 
 """
 
 from os import system
 import libtmux
 from subprocess import PIPE, run,Popen
+import argparse 
+import requests
+import json
+
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('ip', help="input the data in format ip", nargs='*')
+
+args = parser.parse_args()
+
+headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
+
+
+
+#print(json.dumps(ip))
 
 def output(command):
     result = Popen(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
@@ -20,29 +36,54 @@ def output(command):
             break
     return output
 
-
-def tmux(command):
-    return output('tmux %s' % command)
+headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
 
 
-def tmux_shell(command):
-    tmux('send-keys "%s" "C-m"' % command)
+result = output('vagrant status')
+
+if 'not created' in result:
+    number = result.count('not created')
+    print("not created machines found:")
+    print(number)
+    if number != 0:
+        print('here')
+        tempResult = output('vagrant up')
+        if 'Vagrant locks each machine' in tempResult:
+            print("Make sure vagrant is not already running this task")
+
+
+if 'running' in result:
+    number = result.count('running')
+    print("running machines found::")
+    print(number)
+
+ip_list = args.ip
+print("--------------------------------------------------------")
+print("RUNNING TESTS.........")
+print("--------------------------------------------------------")
+for i in range(len(ip_list)):
+    new_ip_list = ip_list.copy()
+    host = new_ip_list.pop(i)
+    ip = {"targets": new_ip_list}
+    ip = json.dumps(ip)
+
+    try:
+        response = requests.post('http://{}/ping'.format(host),headers= headers, data = ip)
+        #print(response.text)
+        decoded = json.loads(response.text)
+        #print(type(decoded))
+        values = decoded["Success"]
+        for value in values:
+            IP = value.split(' ')[0].strip('<')
+            print("{}->{} OK".format(host,IP))
+        values = decoded["fail"]
+        for value in values:
+            IP = value.split(' ')[0].strip('<')
+            print("{}->{} FAIL".format(host,IP))
+    except requests.exceptions.RequestException as e:
+        print(host + "  UNABLE TO CONNECT")
 
 
 
-
-server = libtmux.Server()
-session = server.find_where({"session_name": "vagrant_test"})
-
-session = server.new_session(session_name="vagrant_test", kill_session=True, attach=False)
-window = session.new_window(attach=True, window_name="vagrant_test")
-tmux('select-window -t 0')
-print(tmux_shell('vagrant up'))
-pane1 = window.attached_pane
-pane2 = window.split_window(vertical=True)
-pane3 = window.split_window(vertical=True)
-window.select_layout('even-horizontal')
-pane1.send_keys('vagrant ssh VM1')
-pane2.send_keys('vagrant ssh VM2')
-pane3.send_keys('vagrant ssh VM3')
-server.attach_session(target_session="vagrant_test")
+#curl -d '{"targets":["localhost","192.168.33.101"]}' -H "Content-Type: application/json" -X POST http://host/ping
+#http://192.168.33.102/

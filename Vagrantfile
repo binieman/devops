@@ -9,10 +9,10 @@ Vagrant.configure("2") do |config|
   
 
   (1..3).each do |i|
-    port = 8080+i
-    ip_address = i+100
+    port = 8080+i         #increment port 
+    ip_address = i+100    #increment ip address 
     config.vm.define "VM-#{i}" do |node|
-      node.vm.network "forwarded_port", guest: 3001, host: port, host_ip: "127.0.0.1"
+      node.vm.network "forwarded_port", guest: 80, host: port, host_ip: "127.0.0.1"
       node.vm.network "private_network", ip: "192.168.33.#{ip_address}"
       node.vm.provision "shell", inline: <<-SHELL
         curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
         sudo chmod 777 /var/run/docker.sock
         cd /vagrant
         docker build -t binod/app .
-        docker run -d -e PORT=8080 -p 3001:8080 binod/app
+        docker run -d -e PORT=80 -p 80:80 binod/app
         docker images
         docker ps
 
