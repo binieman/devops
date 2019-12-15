@@ -65,5 +65,22 @@ $>python run-test.py <IP1......IPn>
 
 The code will fire vagranted machines if they are not already running. to destroy the machines please use vagrant destroy
 
+-------------------------------------------------------------------------------------------------------------------
+Example run:
+
+from curl:
+>curl -d '{"targets":["192.168.33.102","192.168.33.103"]}' -H "Content-Type: application/json" -X POST http://192.168.33.101/ping
+
+    {"Success":["<192.168.33.102 pong was successful>"],"fail":["<192.168.33.103 failed>"]}
+
+from run-test.py:
+>python run-test.py 192.168.33.103  192.168.33.102 192.168.33.109
+
+192.168.33.103->192.168.33.102 OK
+192.168.33.103->192.168.33.109 FAIL
+192.168.33.102->192.168.33.103 OK
+192.168.33.102->192.168.33.109 FAIL
+192.168.33.109  UNABLE TO CONNECT
+
 
 
