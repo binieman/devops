@@ -61,7 +61,7 @@ $>pipenv shell
 That should activate the virtual environment for python.
 After that 
 $>pip install -r requirements.txt
-$>python automate.py <IP1......IPn>
+$>python run-test.py <IP1......IPn>
 
 The code will fire vagranted machines if they are not already running. to destroy the machines please use vagrant destroy
 
