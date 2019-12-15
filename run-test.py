@@ -45,8 +45,8 @@ if 'not created' in result:
     number = result.count('not created')
     print("not created machines found:")
     print(number)
-    if number != 0:
-        print('here')
+    if number !=0:
+        #print('here')
         tempResult = output('vagrant up')
         if 'Vagrant locks each machine' in tempResult:
             print("Make sure vagrant is not already running this task")
@@ -56,6 +56,11 @@ if 'running' in result:
     number = result.count('running')
     print("running machines found::")
     print(number)
+    if number < 3:
+        #print('here')
+        tempResult = output('vagrant up')
+        if 'Vagrant locks each machine' in tempResult:
+            print("Make sure vagrant is not already running this task")
 
 ip_list = args.ip
 print("--------------------------------------------------------")
@@ -82,6 +87,8 @@ for i in range(len(ip_list)):
             print("{}->{} FAIL".format(host,IP))
     except requests.exceptions.RequestException as e:
         print(host + "  UNABLE TO CONNECT")
+    
+print('Test Completed')
 
 
 
